@@ -38,8 +38,37 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
---beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 beautiful.init(awful.util.getdir("config") .. "/current_theme/theme.lua")
+--beautiful.init("/home/durox/.config/awesome/current_theme/theme.lua")
+--beautiful.init("/home/durox/.config/awesome/themes/wombat/theme.lua")
+
+-- theme change via menu
+mythememenu = {}
+
+function theme_load(theme)
+	local cfg_path = awful.util.getdir("config")
+
+	-- create symlink from the given theme to
+	-- /home/user/.config/awesome/currentheme
+	awful.util.spawn("ln -sfn " .. cfg_path .. "/themes/" .. theme .. " " .. cfg_path .. "/current_theme")
+	awesome.restart()
+end
+
+function theme_menu()
+	-- list your theme files and feed the menu table
+	local cmd = "ls -1 " .. awful.util.getdir("config") .. "/themes/"
+	local f = io.popen(cmd)
+
+	for l in f:lines() do
+		local item = { l, function () theme_load(l) end }
+		table.insert(mythememenu, item)
+	end
+
+	f:close()
+end
+
+-- Generate your table at startup or restart
+theme_menu()
 
 -- This is used later as the default terminal and editor to run.
 terminal = "gnome-terminal"
@@ -63,11 +92,11 @@ local layouts =
     awful.layout.suit.tile.top,
     awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
+    --awful.layout.suit.spiral,
+    --awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max,
     awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier
+    --awful.layout.suit.magnifier
 }
 -- }}}
 
@@ -84,8 +113,8 @@ end
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
+    tags[s] = awful.tag({ "| Main |", "| Browser |", "| Terminal |", "| Editor |", "| MC |", 6, 7, 8, 9 }, s, layouts[1])
     --tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
-    tags[s] = awful.tag({ "| Main |", "| Browser |", "| Terminals", "~", "~", "~", "| Editor |", "| MC |", 6, }, s, layouts[1])
 end
 -- }}}
 
@@ -94,6 +123,7 @@ end
 myawesomemenu = {
    { "manual", terminal .. " -e man awesome" },
    { "edit config", editor_cmd .. " " .. awesome.conffile },
+   { "themes", mythememenu },
    { "restart", awesome.restart },
    { "quit", awesome.quit }
 }

@@ -9,8 +9,13 @@
 -- {{{ Main
 theme = {}
 theme.default_themes_path = "/usr/share/awesome/themes"
---theme.wallpaper_cmd = { "awsetbg "..theme.default_themes_path.."/zenburn/zenburn-background.png" }
-theme.wallpaper_cmd = { "awsetbg ".. "/home/durox/.config/awesome/current_wallpaper"}
+--theme.wallpaper = theme.default_themes_path.."/zenburn/zenburn-background.png" }
+--theme.wallpaper_cmd = { "awsetbg ".. "/home/durox/.config/awesome/current_wallpaper"}
+--theme.wallpaper_cmd = {awful.util.getdir("config") .. "/current_wallpaper"}
+--theme.wallpaper = awful.util.getdir("config") .. "/current_wallpaper"
+--theme.wallpaper = "/home/durox/Bilder/wallpaper/archlinux-simplyblack.png"
+--theme.wallpaper = "/home/durox/Bilder/wallpaper/White_Arch_Wall_ by_kpolicano_1920x1080.jpg"
+theme.wallpaper = "/home/durox/Bilder/wallpaper/1366x768.jpg"
 theme.colors = {}
 theme.colors.base3   = "#002b36"
 theme.colors.base2   = "#073642"
